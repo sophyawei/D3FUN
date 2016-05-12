@@ -2,9 +2,26 @@
 <html>
 <head>
 <meta charset="utf-8">
+<style>
+.axis path,
+.axis line {
+   fill: none;
+   stroke: black;
+   shape-rendering: crispEdges;
+}
+
+.axis text {
+   font-family: sans-serif;
+   font-size: 11px;
+}
+
+</style>
 </head>
 <body>
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+<g class="axis" transform="translate(0,280)">
+
 <script>
 // var scale = d3.scale.linear()
 //                     .domain([100,500])
@@ -15,7 +32,8 @@ var padding = 20;
 
 var dataset = [
                  [5,20], [480,90], [250,50], [100,33], [330,95],
-                 [410,12], [475,44], [25,67], [85,21], [220,88]
+                 [410,12], [475,44], [25,67], [85,21], [220,88],
+                 [600,150]
 ];
 
 //create scale functions
@@ -68,6 +86,16 @@ svg.selectAll("text")
    .attr("font-family", "san-serif")
    .attr("font-size", "10px")
    .attr("fill", "red");
+
+//setting up axis
+var xAxis = d3.svg.axis()
+                  .scale(xScale)
+                  .orient("bottom");
+
+svg.append("g")
+   .attr("class", "axis")
+   .attr("transform", "translate(0," + (h-padding) + ")") //transform the entire axis group and push it to the bottom
+   .call(xAxis);
 
 </script>
 
