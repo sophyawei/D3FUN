@@ -77,9 +77,12 @@ var svg = d3.select("body")
 					dataset = [];
 
 					for (var i = 0; i < numValues; i++) {
-						var newNum = Math.floor(Math.random() * 25); //new random integer(0-24)
+						var newNum = Math.floor(Math.random() * 100); //new random integer(0-99)
 						dataset.push(newNum);
 					}
+
+                    //update scale domain
+					yScale.domain([0, d3.max(dataset)]);
 
 					//Update all rects
 					svg.selectAll("rect")

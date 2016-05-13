@@ -20,6 +20,8 @@
 <body>
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 
+<p>Click on this text to update the graph with new data values.</p>
+
 <!-- <g class="axis" transform="translate(0,280)"> -->
 
 <script>
@@ -76,11 +78,12 @@ svg.selectAll("circle")
    .attr("cy", function(d) {
    	return yScale(d[1]);
    })
-   .attr("r", 5);
+   .attr("r", 2);
    // .attr("r", function(d) {
    // 	return rScale(d[1]);
    // });
 
+// //add text on circles
 // svg.selectAll("text")
 //    .data(dataset)
 //    .enter()
@@ -110,18 +113,64 @@ var yAxis = d3.svg.axis()
                   .ticks(5);
 
 svg.append("g")
-   .attr("class", "axis")
+   .attr("class", "x axis") // <-- IMPORTANT: added class x here
    .attr("transform", "translate(0," + (h-padding) + ")") //transform the entire axis group and push it to the bottom
    .call(xAxis);
 
 svg.append("g")
-   .attr("class","axis")
+   .attr("class","y axis") // <-- IMPORTANT: added class y here
    .attr("transform","translate(" + padding + ",0)")
    .call(yAxis);
 
 // //formatting tick lables
 // var formatAsPercentage = d3.format(".1%");
 // xAxis.tickFormat(formatAsPercentage);
+
+
+/*click event and update data*/
+d3.select("p")
+  .on("click", function() {
+
+      var numValues = dataset.length;
+      dataset = [];
+      var maxRange = Math.random()*1000;
+      for (var i = 0; i < numValues; i++) {
+           var newNumber1 = Math.floor(Math.random() * maxRange);
+           var newNumber2 = Math.floor(Math.random() * maxRange);
+           dataset.push([newNumber1,newNumber2]);
+      }
+
+      //update scale, so stars won't go out of range
+      xScale.domain([0, d3.max(dataset, function(d) { return d[0]; })]);
+      yScale.domain([0, d3.max(dataset, function(d) { return d[1]; })]);
+
+      //update circles
+      svg.selectAll("circle")
+         .data(dataset)
+         .transition()
+         .duration(1000)
+         .attr("cx", function(d) {
+            return xScale(d[0]);
+         })
+         .attr("cy", function(d) {
+            return yScale(d[1]);
+         });
+         // .attr("r", 1);
+
+      //update x-axis
+      svg.select(".x.axis")
+         .transition()
+         .duration(1000)
+         .call(xAxis);
+
+      //update y-axis
+      svg.select(".y.axis")
+         .transition()
+         .duration(1000)
+         .call(yAxis);
+
+
+  });
 
 </script>
 
