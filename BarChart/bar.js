@@ -27,40 +27,40 @@ svg.selectAll("rect")
    .enter()
    .append("rect")
    .attr("x", function(d,i) {
-        return xScale(i); //i * (w / data.length);
+        return i * (w / data.length); //xScale(i); 
    })
    .attr("y", function(d) {
-        return h - yScale(d); //h - (d*4); //make data grows from the bottom
+        return h - (d*4); //h - yScale(d); //make data grows from the bottom
    })
-   .attr("width", xScale.rangeBand()) //w / data.length - barPadding)
+   .attr("width", w / data.length - barPadding) //xScale.rangeBand()) 
    .attr("height", function(d) {
-        return yScale(d); //d * 5; //the data value
+        return d * 5; //yScale(d); //the data value
    })
    .attr("fill", function(d) {
         return "rgb(0,0," + (d*10) + ")";
    });
 
-// //create labels
-// svg.selectAll("text")
-//    .data(data)
-//    .enter()
-//    .append("text")
-//    .text(function(d) {
-//         return d;
-//    })
-//    .attr("text-anchor", "middle")
-//    .attr("x", function(d, i) {
-//         return xScale(i) + xScale.rangeBand()/2; //i * (w/data.length) + (w/data.length-barPadding)/2;
-//    })
-//    .attr("y", function(d) {
-//         return h - yScale(d) + 14; //h - (d*4) + 14;
-//    })
-//    .attr("font-family", "sans-serif")
-//    .attr("font-size", "11px")
-//    .attr("fill", "white");
+//create labels
+svg.selectAll("text")
+   .data(data)
+   .enter()
+   .append("text")
+   .text(function(d) {
+        return d;
+   })
+   .attr("text-anchor", "middle")
+   .attr("x", function(d, i) {
+        return i * (w/data.length) + (w/data.length-barPadding)/2; //xScale(i) + xScale.rangeBand()/2;
+   })
+   .attr("y", function(d) {
+        return h - (d*4) + 14; //h - yScale(d) + 14;
+   })
+   .attr("font-family", "sans-serif")
+   .attr("font-size", "11px")
+   .attr("fill", "white");
 
 //click event and update with new data
-d3.select("p")
+d3.selectAll("p")
     .on("click", function() {
       
       //new values for data
@@ -69,11 +69,12 @@ d3.select("p")
       //update all rects
       svg.selectAll("rect")
          .data(data)
+         .transition()
          .attr("y", function(d) {
-            return h - yScale(d);
+            return h - (d*4);
          })
          .attr("height", function(d) {
-            return yScale(d);
+            return d * 5;
          })
          .attr("fill", function(d) {
             return "rgb(0,0 " + (d * 10) + ")";
@@ -85,10 +86,10 @@ d3.select("p")
             return d;
          })
          .attr("x", function(d, i) {
-            return xScale(i) + xScale.rangeBand() / 2;
+            return i * (w/data.length) + (w/data.length-barPadding)/2; //xScale(i) + xScale.rangeBand() / 2;
          })
          .attr("y", function(d) {
-            return h - yScale(d) + 14;
+            return h - (d*4) + 14; //h - yScale(d) + 14;
          });
 
     });
