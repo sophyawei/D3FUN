@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!--practice
+http://chimera.labs.oreilly.com/books/1230000000345/ch09.html#_randomizing_the_data-->
+<html>
+<head>
+<style>
+#rect {
+    -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+#tooltip {
+    position: absolute;
+    width: 200px;
+    height: auto;
+    padding: 10px;
+    background-color: white;
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.4);
+    pointer-events: none;
+}
+
+#tooltip.hidden {
+    display: none;
+}
+
+</style>
+
+<meta charset="utf-8">
+</head>
+<body>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+    
+	<p>Click on bars to update the chart with new data values, and see color the 
+        changes when mouse moving.</p>
+    <div id="tooltip" class="hidden">
+        <p><strong>Important Label Heading</strong></p>
+        <p><span id="value">100</span>%</p>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="bar.js"></script>
+
+</body>
+</html>
