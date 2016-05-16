@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<!-- practice:
+	http://chimera.labs.oreilly.com/books/1230000000345/ch11.html#_pie_layout -->
+<style>
+text {
+	font-size: 12px;
+	fill: white;
+}
+</style>
+</head>
+<body>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+<script>
+var w = 300;
+var h = 300;
+
+var dataset = [5, 10, 20, 6, 40, 25];
+
+var outerRadius = w / 2;
+var innerRadius = w / 3;
+var arc = d3.svg.arc()
+                .innerRadius(innerRadius)
+                .outerRadius(outerRadius);
+
+var pie = d3.layout.pie();
+
+//creates an ordinal scale with an output range of 10 different colors.
+var color = d3.scale.category10();
+
+//create svg element
+var svg = d3.select("body")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h);
+
+//set up groups
+//saving a reference to each newly created g in a variable called arcs
+var arcs = svg.selectAll("g.arc")
+              .data(pie(dataset))
+              .enter()
+              .append("g")
+              .attr("class", "arc")
+              .attr("transform", "translate(" + outerRadius + "," + outerRadius + ")");
+
+
+/*with each new g, we append a path.
+A paths path description is defined in the d attribute. 
+so we call the arc generator, which generates the path information based on
+the data already bound to the group.
+*/
+//draw arc paths
+arcs.append("path")
+    .attr("fill", function(d,i) {
+    	return color(i);
+    })
+    .attr("d",arc);
+
+arcs.append("text")
+    .attr("transform", function(d) {
+    	return "translate(" + arc.centroid(d) + ")";
+    })
+    .attr("text-anchor", "middle")
+    .text(function(d) {
+    	return d.value;
+    	//d.value => we bound the pie-ified data, so instead of referencing
+    	//our original array(d), we have to reference the array of objects
+    	//(d.value).
+    });
+
+
+</script>
+
+</body>
+</html>
